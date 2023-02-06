@@ -24,7 +24,7 @@ const Search = props => (
     <label htmlFor="search">Search: </label>
     <input id="search" type="text" onChange={props.onSearch} />
     <p>
-      Searching for <strong>{props.handleSearch}</strong>
+      Searching for <strong>{props.search}</strong>
     </p>
   </div>
 );
@@ -61,7 +61,7 @@ const App = () => {
     <div>
       <h1>Hello React</h1>
 
-      <Search onSearch={handleSearch} />
+      <Search onSearch={handleSearch} search={searchTerm} />
       <hr />
 
       <List list={searchedStories} />
