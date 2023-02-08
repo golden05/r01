@@ -20,13 +20,18 @@ const List = ({ list }) => (
 );
 
 const Search = ({ search, onSearch }) => (
-  <div>
-    <label htmlFor="search">Search: </label>
+  <>
+    <label htmlFor="search">Search:</label>
     <input id="search" type="text" value={search} onChange={onSearch} />
-    <p>
-      Searching for <strong>{search}</strong>
-    </p>
-  </div>
+  </>
+);
+
+const InputWithLabel = ({ id, label, value, onInputChange }) => (
+  <>
+    <label htmlFor={id}>{label}</label>
+    &nbsp;
+    <input id={id} type="text" value={value} onChange={onInputChange} />
+  </>
 );
 
 const App = () => {
@@ -37,7 +42,7 @@ const App = () => {
       author: "Jordan Walke",
       num_comments: 3,
       points: 4,
-      objectID: 0
+      objectID: 0,
     },
     {
       title: "Redux",
@@ -45,22 +50,31 @@ const App = () => {
       author: "Dan Abramov, Andrew Clark",
       num_comments: 2,
       points: 5,
-      objectID: 1
-    }
+      objectID: 1,
+    },
   ];
 
-  const [searchTerm, setSearchTerm] = React.useState(
-    localStorage.getItem("search") || "Re"
-  );
+  const useStorageState = (key, initialState) => {
+    const [value, setValue] = React.useState(
+      localStorage.getItem(key) || initialState
+    );
 
-  React.useEffect();
-  const handleSearch = event => {
+    React.useEffect(() => {
+      localStorage.setItem(key, value);
+    }, [value, key]);
+
+    return [value, setValue];
+  };
+
+  const [searchTerm, setSearchTerm] = useStorageState("search", "React");
+
+  const handleSearch = (event) => {
     setSearchTerm(event.target.value);
 
     localStorage.setItem("search", event.target.value);
   };
 
-  const searchedStories = stories.filter(story =>
+  const searchedStories = stories.filter((story) =>
     story.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -68,6 +82,12 @@ const App = () => {
     <div>
       <h1>Hello React</h1>
 
+      <InputWithLabel
+        id="search"
+        label="Search"
+        value={searchTerm}
+        onInputChange={handleSearch}
+      />
       <Search onSearch={handleSearch} search={searchTerm} />
       <hr />
 
