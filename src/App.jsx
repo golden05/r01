@@ -31,7 +31,7 @@ const InputWithLabel = ({
   type = "text",
   value,
   onInputChange,
-  children
+  children,
 }) => (
   <>
     <label htmlFor={id}>{children}</label>
@@ -48,7 +48,7 @@ const App = () => {
       author: "Jordan Walke",
       num_comments: 3,
       points: 4,
-      objectID: 0
+      objectID: 0,
     },
     {
       title: "Redux",
@@ -56,8 +56,8 @@ const App = () => {
       author: "Dan Abramov, Andrew Clark",
       num_comments: 2,
       points: 5,
-      objectID: 1
-    }
+      objectID: 1,
+    },
   ];
 
   const useStorageState = (key, initialState) => {
@@ -74,13 +74,13 @@ const App = () => {
 
   const [searchTerm, setSearchTerm] = useStorageState("search", "React");
 
-  const handleSearch = event => {
+  const handleSearch = (event) => {
     setSearchTerm(event.target.value);
 
     localStorage.setItem("search", event.target.value);
   };
 
-  const searchedStories = stories.filter(story =>
+  const searchedStories = stories.filter((story) =>
     story.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -93,7 +93,10 @@ const App = () => {
         label="Search"
         value={searchTerm}
         onInputChange={handleSearch}
-      />
+      >
+        <strong>Search:</strong>
+      </InputWithLabel>
+
       <Search onSearch={handleSearch} search={searchTerm} />
       <hr />
 
